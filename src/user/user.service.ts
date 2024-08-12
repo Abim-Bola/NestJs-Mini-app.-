@@ -3,7 +3,12 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { NotFoundError } from 'rxjs';
+import { AuthService } from './auth.service';
+
+
+
 @Injectable()
+
 export class UserService {
     constructor(@InjectRepository(User) private repo: Repository<User>) { }
 
