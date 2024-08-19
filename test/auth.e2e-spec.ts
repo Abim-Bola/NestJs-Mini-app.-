@@ -25,4 +25,20 @@ describe('Authentication system', () => {
                 expect(id).toBeDefined()
             })
     });
+
+    it('Signup as new user and get current logged in user', async () => {
+        const email = 'ag@gmail.com'
+        const res = await request(app.getHttpServer())
+            .post('/auth/signup')
+            .send({ email: 'ag@gmail.com', password: 'a' })
+            .expect(201)
+
+        const cookie = res.get('Set-Cookie') //Gets the cookie so we can attach to other requests
+        const { body } = await request(app.getHttpServer())
+            .get('/auth/whoami')
+            .set('Cookie', cookie)
+            .expect(200)
+
+        expect(body.email).toEqual(email)
+    });
 });
