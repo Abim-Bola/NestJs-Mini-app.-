@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators'
 import { plainToClass } from "class-transformer";
 
 
-interface ClassConstructor { //This is to add a type to ensure what is passed is always a class
+interface ClassConstructor { // This is to add a type to ensure what is passed is always a class
     new(...args: any[]): {}
 }
 export function Serialize(dto: ClassConstructor) {
