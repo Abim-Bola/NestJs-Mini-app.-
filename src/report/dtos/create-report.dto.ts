@@ -6,7 +6,7 @@ export class CreateReportDto {
 
     @IsNumber()
     @Min(0)
-    @Max(100)
+    @Max(1000000)
     price: number;
 
 

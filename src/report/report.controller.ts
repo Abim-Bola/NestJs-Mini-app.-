@@ -10,13 +10,13 @@ import { ApproveReportDto } from './dtos/approve-report.dto';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { GetEstimateDto } from './dtos/get-estimate.dto';
 
-@Serialize(ReportDto)
 @Controller('reports')
 export class ReportController {
     constructor(private reportService: ReportService) {
 
     }
     @Post()
+    @Serialize(ReportDto)
     @UseGuards(AuthGuard) // Ensures user is signed in
     async createReport(@Body() body: CreateReportDto, @CurrentUser() user: User) {
         const report = await this.reportService.create(body, user)
@@ -24,6 +24,7 @@ export class ReportController {
     }
 
     @Patch('/:id')
+    @Serialize(ReportDto)
     @UseGuards(AdminGuard)
     async approveReport(@Param('id') id: string, @Body() body: ApproveReportDto, @CurrentUser() user: User) {
         const { approved } = body
@@ -32,7 +33,7 @@ export class ReportController {
 
     @Get()
     async getEstimate(@Query() query: GetEstimateDto, @CurrentUser() user: User) {
-        // return await this.reportService.changeApproval(id, approved, user)
+        return await this.reportService.createEstimate(query)
     }
 
 }
