@@ -1,5 +1,4 @@
 import { Expose, Transform } from 'class-transformer'
-import { User } from '../../user/user.entity'
 
 export class ReportDto {
     @Expose()
@@ -25,6 +24,9 @@ export class ReportDto {
 
     @Expose()
     mileage: number
+
+    @Expose()
+    approved: boolean
 
     @Transform(({ obj }) => obj.user.id) // Take the orginal report entity, look at user prop and look at user id
     @Expose()

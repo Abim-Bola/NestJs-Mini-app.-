@@ -9,7 +9,7 @@ interface ClassConstructor { // This is to add a type to ensure what is passed i
     new(...args: any[]): {}
 }
 export function Serialize(dto: ClassConstructor) {
-    return UseInterceptors(new SerializeInterceptor(UserDto))
+    return UseInterceptors(new SerializeInterceptor(dto))
 }
 
 export class SerializeInterceptor implements NestInterceptor {
