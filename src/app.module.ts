@@ -6,8 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { ReportModule } from './report/report.module';
-import { User } from './user/user.entity';
-import { Report } from './report/report.entity';
 const cookieSession = require('cookie-session')
 
 @Module({
@@ -17,17 +15,7 @@ const cookieSession = require('cookie-session')
       envFilePath: `.env.${process.env.NODE_ENV}`
     }),
 
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService], // Will give access to the config file
-      useFactory: (config: ConfigService) => {
-        return {
-          type: 'sqlite',
-          database: config.get<string>('DB_NAME'),
-          entities: [User, Report],
-          synchronize: true, // Only used in dev env
-        }
-      }
-    }),
+    TypeOrmModule.forRoot(),
     UserModule,
     ReportModule,
   ],
@@ -44,9 +32,12 @@ const cookieSession = require('cookie-session')
   ],
 })
 export class AppModule {
+  constructor(private configService: ConfigService) {
+
+  }
   configure(consumer: MiddlewareConsumer) { //set up middleware to run on every incoming request
     consumer.apply(cookieSession({
-      keys: ['heyabimbola'] //Used to encrypt cookie - Should be stored in env
+      keys: [this.configService.get('COOKIE_KEY')] //Used to encrypt cookie - Should be stored in env
     })).forRoutes('*') //global middleware for all routes
   }
 }
